@@ -5,7 +5,7 @@ from configparser import ConfigParser
 
 
 # 定义批量将xlsx文件转换为csv文件的函数
-def xlsx_to_csv(path):
+def xlsx_to_csv1(path):
     # 定义保存结果的数组
     result = []
     # 定义符合条件的csvlist
@@ -16,11 +16,14 @@ def xlsx_to_csv(path):
         cur_path = os.path.join(path, file)
         # 判断是否是文件夹
         if os.path.isdir(cur_path):
-            xlsx_to_csv(cur_path)
+            xlsx_to_csv1(cur_path)
         else:
             result.append(file)
             # 将xlsx文件转换为csv文件
             pd.read_excel(cur_path).to_csv(cur_path.replace('.xlsx', '.csv'))
+            # 删除第一列
+            df = pd.read_csv(cur_path + '.csv')
+            df.drop(df.columns[0], axis=1, inplace=True)
     print(result)
     print('Done!')
 
